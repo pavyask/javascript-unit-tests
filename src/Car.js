@@ -17,7 +17,7 @@ module.exports = class Car {
 
   rent() {
     if (this.#available === true) {
-      this.rentalList.push(new Rent(new Date()));
+      this.rentalList.push(new Rent());
       this.#available = false;
       console.log(`Car number ${this.carNumber} rented successfully`);
       return true;

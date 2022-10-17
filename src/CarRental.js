@@ -2,14 +2,34 @@
 
 module.exports = class CarRental {
   constructor() {
-    const carArray = [];
+    this.carArray = [];
   }
 
-  numberOfRentedCars() {}
+  numberOfRentedCars() {
+    let counter = 0;
+    this.carArray.forEach((car) => {
+      if (car.isAvailable === false) counter++;
+    });
+    return counter;
+  }
 
-  availableCarsInTimeRange() {}
+  availableCars() {
+    let availableCars = [];
+    this.carArray.forEach((car) => {
+      if (car.isAvailable === true) availableCars.push(car);
+    });
+    return availableCars;
+  }
 
-  mostFrequentlyRentedCars() {}
+  mostFrequentlyRentedCars() {
+    let carArrayCopy = [...this.carArray];
+    carArrayCopy.sort((a, b) => b.rentalList.length - a.rentalList.length);
+    return carArrayCopy.slice(0, 10);
+  }
 
-  mostFrequentlyDamagedCars() {}
+  mostFrequentlyDamagedCars() {
+    let carArrayCopy = [...this.carArray];
+    carArrayCopy.sort((a, b) => b.damageList.length - a.damageList.length);
+    return carArrayCopy.slice(0, 10);
+  }
 };
