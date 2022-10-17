@@ -1,21 +1,49 @@
 "use strict";
 
-module.exports = class Car {
-  #rentalList = [];
-  #damageList = [];
+const Rent = require("./Rent");
 
-  constructor(carNumber, pricePerDay, mileage = 0, numberOfPassengers = 0) {
+module.exports = class Car {
+  #available;
+
+  constructor(carNumber, numberOfPassengers, pricePerDay, mileage = 0) {
     this.carNumber = carNumber;
+    this.numberOfPassengers = numberOfPassengers;
     this.pricePerDay = pricePerDay;
     this.mileage = mileage;
-    this.numberOfPassengers = numberOfPassengers;
+    this.rentalList = [];
+    this.damageList = [];
+    this.#available = true;
   }
 
-  rent() {}
+  rent() {
+    if (this.#available === true) {
+      this.rentalList.push(new Rent(new Date()));
+      this.#available = false;
+      console.log(`Car number ${this.carNumber} rented successfully`);
+      return true;
+    } else {
+      console.log(`Car number ${this.carNumber} can't be rented`);
+      return false;
+    }
+  }
 
-  return() {}
+  return() {
+    if (this.#available === false) {
+      this.rentalList[this.rentalList.length - 1].endDate = new Date();
+      this.#available = true;
+      console.log(`Car number ${this.carNumber} returned successfully`);
+      return true;
+    } else {
+      console.log(`Car number ${this.carNumber} is not rented`);
+      return false;
+    }
+  }
 
-  whenAvailable() {}
+  isAvailable() {
+    return this.#available;
+  }
 
-  addDamage(damage) {}
+  addDamage(damage) {
+    this.damageList.push(damage);
+  }
 };

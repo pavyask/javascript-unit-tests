@@ -1,8 +1,8 @@
 "use strict";
 
 module.exports = class Rent {
-  constructor(startDate, endDate) {
+  constructor(startDate) {
     this.startDate = startDate;
-    this.endDate = endDate;
+    this.endDate = undefined;
   }
 };
