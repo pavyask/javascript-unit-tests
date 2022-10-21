@@ -1,9 +1,11 @@
 "use strict";
 
+const Damage = require("./Damage");
 const Rent = require("./Rent");
 
 module.exports = class Car {
   #rentalIdCounter;
+  #damageIdCounter;
 
   constructor(carNumber, pricePerDay = 20, mileage = 0, numberOfSeats = 5) {
     this.carNumber = carNumber;
@@ -12,13 +14,14 @@ module.exports = class Car {
     this.numberOfSeats = numberOfSeats;
     this.rentalList = [];
     this.#rentalIdCounter = 1;
+    this.#damageIdCounter = 1;
     this.damageList = [];
   }
 
   rent(startDate, endDate) {
-    if (this.isAvailable(startDate, endDate)) {
+    if (this.isAvailableInInterval(startDate, endDate)) {
       this.rentalList.push(new Rent(this.#rentalIdCounter, startDate, endDate));
-      this.#sortRentalList();
+      this.#sortRentalsChronogically();
       this.#rentalIdCounter++;
       console.log(`Car number ${this.carNumber} rented successfully`);
       return true;
@@ -51,9 +54,7 @@ module.exports = class Car {
     return result;
   }
 
-  // whenAvailable() {}
-
-  isAvailable(startDate, endDate) {
+  isAvailableInInterval(startDate, endDate) {
     for (const rent of this.rentalList) {
       if (
         (startDate >= rent.startDate && startDate <= rent.endDate) ||
@@ -72,14 +73,26 @@ module.exports = class Car {
     return true;
   }
 
-  addDamage(damage) {
-    this.damageList.push(damage);
+  isAvailableAtDate(date) {
+    for (const rent of this.rentalList) {
+      if (date >= rent.startDate && date <= rent.endDate) {
+        console.log(`Car ${this.carNumber} rental isn't available at ${date}`);
+        return false;
+      }
+    }
+    console.log(`Car ${this.carNumber} rental is available at ${date}`);
+    return true;
+  }
+
+  addDamage(damageDescription) {
+    this.damageList.push(new Damage(this.#damageIdCounter, damageDescription));
+    this.#damageIdCounter++;
     console.log(
-      `Car ${this.carNumber}, damage:"${damage}" added successfully to the damageList`
+      `Car ${this.carNumber}, damage:"${damageDescription}" added successfully to the damageList`
     );
   }
 
-  #sortRentalList() {
+  #sortRentalsChronogically() {
     this.rentalList.sort((a, b) => a.startDate - b.startDate);
   }
 };
