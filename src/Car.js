@@ -3,47 +3,58 @@
 const Rent = require("./Rent");
 
 module.exports = class Car {
-  #available;
-
-  constructor(carNumber, numberOfPassengers, pricePerDay, mileage = 0) {
+  constructor(carNumber, pricePerDay = 20, mileage = 0, numberOfSeats = 5) {
     this.carNumber = carNumber;
-    this.numberOfPassengers = numberOfPassengers;
     this.pricePerDay = pricePerDay;
     this.mileage = mileage;
+    this.numberOfSeats = numberOfSeats;
     this.rentalList = [];
     this.damageList = [];
-    this.#available = true;
   }
 
-  rent() {
-    if (this.#available === true) {
-      this.rentalList.push(new Rent());
-      this.#available = false;
+  rent(id, startDate, endDate) {
+    if (this.isAvailable(startDate, endDate)) {
+      this.rentalList.push(new Rent(id, startDate, endDate));
+      this.#sortRentalList();
       console.log(`Car number ${this.carNumber} rented successfully`);
       return true;
     } else {
-      console.log(`Car number ${this.carNumber} can't be rented`);
+      console.log(`Car number ${this.carNumber} can't be rented at that time`);
       return false;
     }
   }
 
-  return() {
-    if (this.#available === false) {
-      this.rentalList[this.rentalList.length - 1].endDate = new Date();
-      this.#available = true;
-      console.log(`Car number ${this.carNumber} returned successfully`);
+  return(rentId, newEndDate) {
+    const indexOfRent = this.rentalList.findIndex((rent) => rent.id === rentId);
+
+    if (newEndDate < this.rentalList[indexOfRent].startDate) {
+      rentalList.splice(indexOfRent, 1);
       return true;
-    } else {
-      console.log(`Car number ${this.carNumber} is not rented`);
-      return false;
     }
+
+    let result = this.rentalList[indexOfRent].end(newEndDate);
+    return result;
   }
 
-  isAvailable() {
-    return this.#available;
+  // whenAvailable() {}
+
+  isAvailable(startDate, endDate) {
+    for (const rent of this.rentalList) {
+      if (
+        (startDate > rent.startDate && startDate < rent.endDate) ||
+        (endDate > rent.startDate && endDate < rent.endDate) ||
+        (startDate < rent.startDate && endDate > rent.endDate)
+      )
+        return false;
+    }
+    return true;
   }
 
   addDamage(damage) {
     this.damageList.push(damage);
+  }
+
+  #sortRentalList() {
+    rentalList.sort((a, b) => a.startDate - b.startDate);
   }
 };
