@@ -7,16 +7,18 @@ module.exports = class CarRental {
 
   numberOfRentedCars() {
     let counter = 0;
+    let currDate = new Date();
     this.carArray.forEach((car) => {
-      if (car.isAvailable === false) counter++;
+      if (car.isAvailableAtDate(currDate) === false) counter++;
     });
     return counter;
   }
 
-  availableCars() {
+  availableCarsInTimeInterval(startDate, endDate) {
     let availableCars = [];
     this.carArray.forEach((car) => {
-      if (car.isAvailable === true) availableCars.push(car);
+      if (car.isAvailableInInterval(startDate, endDate) === true)
+        availableCars.push(car);
     });
     return availableCars;
   }
