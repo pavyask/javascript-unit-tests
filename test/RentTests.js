@@ -22,14 +22,12 @@ describe("Rent Tests", function () {
   it("Rent endDate must be changed", function () {
     let msg = `Rent endDate changed`;
     rent.end(dateDuring);
-    expect(console.log.calledOnce).to.be.true;
     expect(console.log.calledWith(msg)).to.be.true;
   });
 
   it("Rent endDate must not be changed (rent already ended)", function () {
     let msg = `Rent has already ended`;
     rent.end(dateAfter);
-    expect(console.log.calledOnce).to.be.true;
     expect(console.log.calledWith(msg)).to.be.true;
   });
 });

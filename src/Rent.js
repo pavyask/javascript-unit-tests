@@ -9,7 +9,6 @@ module.exports = class Rent {
 
   end(newEndDate = new Date()) {
     if (newEndDate < this.endDate) {
-      // if (newEndDate < this.startDate) this.startDate = newEndDate;
       this.endDate = newEndDate;
       console.log(`Rent endDate changed`);
       return true;
