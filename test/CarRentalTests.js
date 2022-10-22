@@ -7,7 +7,8 @@ const Car = require("../src/Car");
 const Damage = require("../src/Damage");
 const CarRental = require("../src/CarRental");
 
-const damageDataSet = [
+const damageDataSet = new Set();
+[
   "Front bumper damage",
   "Back bumper damage",
   "Broken headlights",
@@ -19,7 +20,7 @@ const damageDataSet = [
   "Dings in the windshield",
   "Punctured tires",
   "Road rash” on wheels",
-];
+].forEach((item) => damageDataSet.add(item));
 
 function rentNTimes(car, n) {
   for (let i = 0; i < n; i++) {
@@ -36,7 +37,8 @@ function damegeNTimes(car, n) {
     car.damageList.push(
       new Damage(
         i + 1,
-        damageDataSet[Math.floor(Math.random() * damageDataSet.length)]
+        (damageDataSet) =>
+          [...damageDataSet][Math.floor(Math.random() * damageDataSet.size)]
       )
     );
   }

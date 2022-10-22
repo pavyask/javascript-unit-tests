@@ -4,14 +4,18 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha"
+    "test": "mocha",
+    "babel-src":"babel src -d src_env",
+    "babel-test":"babel test -d test_env"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@babel/cli": "^7.19.3",
+    "@babel/core": "^7.19.6",
+    "@babel/preset-env": "^7.19.4",
     "chai": "^4.3.6",
-    "mocha": "^10.1.0",
-    "mocha-sinon": "^2.1.2"
+    "mocha": "^10.1.0"
   }
 }

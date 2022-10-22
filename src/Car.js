@@ -79,7 +79,7 @@ module.exports = class Car {
     return true;
   }
 
-  isAvailableAtDate(date) {
+  isAvailableAtDate(date = new Date()) {
     for (const rent of this.rentalList) {
       if (date >= rent.startDate && date <= rent.endDate) {
         console.log(
