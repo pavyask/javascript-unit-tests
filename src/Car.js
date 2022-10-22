@@ -45,7 +45,9 @@ module.exports = class Car {
     let result = this.rentalList[indexOfRent].end(newEndDate);
     if (result === true)
       console.log(
-        `Car number ${this.carNumber}, rent with id=${rentId} endDate is changed to ${newEndDate}`
+        `Car number ${
+          this.carNumber
+        }, rent with id=${rentId} endDate is changed to ${newEndDate.toLocaleDateString()}`
       );
     else
       console.log(
@@ -62,13 +64,17 @@ module.exports = class Car {
         (startDate <= rent.startDate && endDate >= rent.endDate)
       ) {
         console.log(
-          `Car ${this.carNumber} rental isn't available from ${startDate} to ${endDate}`
+          `Car ${
+            this.carNumber
+          } rental isn't available from ${startDate.toLocaleDateString()} to ${endDate.toLocaleDateString()}`
         );
         return false;
       }
     }
     console.log(
-      `Car ${this.carNumber} rental is available from ${startDate} to ${endDate}`
+      `Car ${
+        this.carNumber
+      } rental is available from ${startDate.toLocaleDateString()} to ${endDate.toLocaleDateString()}`
     );
     return true;
   }
@@ -76,11 +82,19 @@ module.exports = class Car {
   isAvailableAtDate(date) {
     for (const rent of this.rentalList) {
       if (date >= rent.startDate && date <= rent.endDate) {
-        console.log(`Car ${this.carNumber} rental isn't available at ${date}`);
+        console.log(
+          `Car ${
+            this.carNumber
+          } rental isn't available at ${date.toLocaleDateString()}`
+        );
         return false;
       }
     }
-    console.log(`Car ${this.carNumber} rental is available at ${date}`);
+    console.log(
+      `Car ${
+        this.carNumber
+      } rental is available at ${date.toLocaleDateString()}`
+    );
     return true;
   }
 

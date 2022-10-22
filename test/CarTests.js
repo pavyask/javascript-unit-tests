@@ -1,16 +1,12 @@
 "use strict";
 
 let expect = require("chai").expect;
-require("mocha-sinon");
-const Rent = require("../src/Rent");
 const Car = require("../src/Car");
-const Damage = require("../src/Damage");
 
 describe("Car Tests", function () {
   let car;
   const carNumber = 1;
   const id = 1;
-  const id2 = 2;
   const startDate = new Date("2022-10-10");
   const endDate = new Date("2022-11-10");
   const dateBefore = new Date("2022-8-10");
@@ -21,7 +17,6 @@ describe("Car Tests", function () {
   const damageDescription = "Damage description 2";
 
   beforeEach(function () {
-    this.sinon.stub(console, "log");
     car = new Car(carNumber);
     car.rent(startDate, endDate);
     car.addDamage("Damage description 1");
@@ -29,78 +24,67 @@ describe("Car Tests", function () {
 
   // Rent
   it("Car rental success", function () {
-    let msg = `Car number ${car.carNumber} rented successfully`;
-    car.rent(dateBefore, startDate);
-    expect(console.log.calledWith(msg)).to.be.true;
+    const result = car.rent(dateBefore, dateBefore2);
+    expect(result).to.be.true;
   });
 
   it("Car rental failed", function () {
-    let msg = `Car number ${car.carNumber} can't be rented at that time`;
-    car.rent(dateBefore, dateAfter);
-    expect(console.log.calledWith(msg)).to.be.true;
+    const result = car.rent(dateBefore, dateAfter);
+    expect(result).to.be.false;
   });
 
   // Return
   it("Car return success (rent cancelled)", function () {
-    let msg = `Car number ${car.carNumber}, rent with id=${id} cancelled`;
-    car.return(id, dateBefore);
-    expect(console.log.calledWith(msg)).to.be.true;
+    const result = car.return(id, dateBefore);
+    expect(result).to.be.true;
   });
 
   it("Car return success (rent endDate must be changed to an earlier date)", function () {
-    let msg = `Car number ${car.carNumber}, rent with id=${id} endDate is changed to ${dateDuring}`;
-    car.return(id, dateDuring);
-    expect(console.log.calledWith(msg)).to.be.true;
+    const result = car.return(id, dateDuring);
+    expect(result).to.be.true;
   });
 
   it("Car return failed (rent has already ended)", function () {
-    let msg = `Car number ${car.carNumber}, rent with id=${id} has already ended`;
-    car.return(id, dateAfter);
-    expect(console.log.calledWith(msg)).to.be.true;
+    const result = car.return(id, dateAfter);
+    expect(result).to.be.false;
   });
 
   // IsAvailableInInterval
   it("Car rental is available in time interval", function () {
-    let msg = `Car ${car.carNumber} rental is available from ${dateAfter} to ${dateAfter2}`;
-    car.isAvailableInInterval(dateAfter, dateAfter2);
-    expect(console.log.calledWith(msg)).to.be.true;
+    const result = car.isAvailableInInterval(dateAfter, dateAfter2);
+    expect(result).to.be.true;
   });
 
   it("Car rental isn't available in time interval (endDate in the middle of another rent)", function () {
-    let msg = `Car ${car.carNumber} rental isn't available from ${dateBefore} to ${startDate}`;
-    car.isAvailableInInterval(dateBefore, startDate);
-    expect(console.log.calledWith(msg)).to.be.true;
+    const result = car.isAvailableInInterval(dateBefore, startDate);
+    expect(result).to.be.false;
   });
 
   it("Car rental isn't available in time interval (startDate in the middle of another rent)", function () {
-    let msg = `Car ${car.carNumber} rental isn't available from ${endDate} to ${dateAfter}`;
-    car.isAvailableInInterval(endDate, dateAfter);
-    expect(console.log.calledWith(msg)).to.be.true;
+    const result = car.isAvailableInInterval(endDate, dateAfter);
+    expect(result).to.be.false;
   });
 
   it("Car rental isn't available in time interval (another rent in the middle of the range)", function () {
-    let msg = `Car ${car.carNumber} rental isn't available from ${dateBefore} to ${dateAfter}`;
-    car.isAvailableInInterval(dateBefore, dateAfter);
-    expect(console.log.calledWith(msg)).to.be.true;
+    const result = car.isAvailableInInterval(dateBefore, dateAfter);
+    expect(result).to.be.false;
   });
 
   // isAvailableAtDate
   it("Car rental is available at date", function () {
-    let msg = `Car ${car.carNumber} rental is available at ${dateAfter}`;
-    car.isAvailableAtDate(dateAfter);
-    expect(console.log.calledWith(msg)).to.be.true;
+    const reuslt = car.isAvailableAtDate(dateAfter);
+    expect(reuslt).to.be.true;
   });
 
   it("Car rental isn't available at date", function () {
-    let msg = `Car ${car.carNumber} rental isn't available at ${dateDuring}`;
-    car.isAvailableAtDate(dateDuring);
-    expect(console.log.calledWith(msg)).to.be.true;
+    const result = car.isAvailableAtDate(dateDuring);
+    expect(result).to.be.false;
   });
 
   // AddDamage
   it("Damage added to the damageList successfully", function () {
     car.damageList = [];
-    let damageListLength = car.damageList.length;
+    const damageListLength = car.damageList.length;
     car.addDamage(damageDescription);
     expect(car.damageList.length).to.eql(damageListLength + 1);
     expect(car.damageList.slice(-1)[0].damageDescription).to.eql(

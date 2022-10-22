@@ -2,13 +2,13 @@
 
 module.exports = class CarRental {
   constructor() {
-    this.carArray = [];
+    this.cars = [];
   }
 
-  numberOfRentedCars() {
+  numberOfRentedNowCars() {
     let counter = 0;
     let currDate = new Date();
-    this.carArray.forEach((car) => {
+    this.cars.forEach((car) => {
       if (car.isAvailableAtDate(currDate) === false) counter++;
     });
     return counter;
@@ -16,7 +16,7 @@ module.exports = class CarRental {
 
   availableCarsInTimeInterval(startDate, endDate) {
     let availableCars = [];
-    this.carArray.forEach((car) => {
+    this.cars.forEach((car) => {
       if (car.isAvailableInInterval(startDate, endDate) === true)
         availableCars.push(car);
     });
@@ -24,13 +24,13 @@ module.exports = class CarRental {
   }
 
   mostFrequentlyRentedCars() {
-    let carArrayCopy = [...this.carArray];
+    let carArrayCopy = [...this.cars];
     carArrayCopy.sort((a, b) => b.rentalList.length - a.rentalList.length);
     return carArrayCopy.slice(0, 10);
   }
 
   mostFrequentlyDamagedCars() {
-    let carArrayCopy = [...this.carArray];
+    let carArrayCopy = [...this.cars];
     carArrayCopy.sort((a, b) => b.damageList.length - a.damageList.length);
     return carArrayCopy.slice(0, 10);
   }
